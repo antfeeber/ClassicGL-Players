@@ -13,15 +13,15 @@ try{
  Add-Type -AssemblyName System.IO.Compression.FileSystem
  [Net.ServicePointManager]::SecurityProtocol=[Net.SecurityProtocolType]::Tls12
  $form=New-Object Windows.Forms.Form
- $form.Text='OpenGL';$form.StartPosition='CenterScreen';$form.ClientSize=New-Object Drawing.Size(460,130)
+ $form.Text='ClassicGL';$form.StartPosition='CenterScreen';$form.ClientSize=New-Object Drawing.Size(460,130)
  $form.FormBorderStyle='FixedDialog';$form.MaximizeBox=$false;$form.ControlBox=$false
  $form.BackColor=[Drawing.Color]::Black;$form.ForeColor=[Drawing.Color]::White
- $label=New-Object Windows.Forms.Label;$label.Text='Checking multiplayer update...';$label.SetBounds(20,68,420,44);$label.TextAlign='MiddleCenter'
+ $label=New-Object Windows.Forms.Label;$label.Text='Checking for updates...';$label.SetBounds(20,68,420,44);$label.TextAlign='MiddleCenter'
  $bar=New-Object Windows.Forms.ProgressBar;$bar.SetBounds(20,35,420,22);$bar.Minimum=0;$bar.Maximum=100
  $form.Controls.AddRange(@($label,$bar));$form.Show()
  function Status([int]$n,[string]$s){$bar.Value=[Math]::Max(0,[Math]::Min(100,$n));$label.Text=$s;$form.Refresh();[Windows.Forms.Application]::DoEvents()}
  function Fetch([string]$url,[string]$file,[long]$max,[long]$expected=0){
-  $req=[Net.HttpWebRequest]::Create($url);$req.UserAgent='OpenGL-Multiplayer-Test';$req.Timeout=20000;$req.ReadWriteTimeout=20000;$req.AllowAutoRedirect=$true;$req.CachePolicy=New-Object Net.Cache.RequestCachePolicy([Net.Cache.RequestCacheLevel]::NoCacheNoStore)
+  $req=[Net.HttpWebRequest]::Create($url);$req.UserAgent='ClassicGL-Updater';$req.Timeout=20000;$req.ReadWriteTimeout=20000;$req.AllowAutoRedirect=$true;$req.CachePolicy=New-Object Net.Cache.RequestCachePolicy([Net.Cache.RequestCacheLevel]::NoCacheNoStore)
   $res=$req.GetResponse()
   try{
    if($res.ResponseUri.Scheme -ne 'https' -or $res.ContentLength -gt $max){throw 'Invalid download response'}
@@ -42,19 +42,19 @@ try{
  if(!(Installed $current)){$current=''}
  $feedFile=Join-Path $root ('feed-'+[guid]::NewGuid().ToString('N')+'.tmp')
  try{
-  Fetch ($base+'multiplayer-update.json') $feedFile 16384
+  Fetch ($base+'classicgl-update.json') $feedFile 16384
   $feed=Get-Content -LiteralPath $feedFile -Raw|ConvertFrom-Json
   $v=[string]$feed.version
   $name=[string]$feed.filename
   $sha=[string]$feed.sha256
   $size=[long]$feed.bytes
-  if($feed.schema -ne 1 -or $feed.channel -cne 'multiplayer-test' -or $v -notmatch '^[0-9]{17}$' -or $name -cne ('OpenGL-Multiplayer-'+$v+'.zip') -or $sha -notmatch '^[a-fA-F0-9]{64}$' -or $size -lt 1 -or $size -gt 300MB){throw 'Invalid multiplayer update feed'}
+  if($feed.schema -ne 1 -or $feed.channel -cne 'multiplayer-test' -or $v -notmatch '^[0-9]{17}$' -or $name -cne ('ClassicGL-Multiplayer-'+$v+'.zip') -or $sha -notmatch '^[a-fA-F0-9]{64}$' -or $size -lt 1 -or $size -gt 300MB){throw 'Invalid multiplayer update feed'}
  }catch{
   throw ('Multiplayer update feed is unavailable. No files were changed. Ask the host to publish the test build. '+$_.Exception.Message)
  }finally{Remove-Item -LiteralPath $feedFile -Force -ErrorAction SilentlyContinue}
  if(!$current -or [string]::CompareOrdinal($v,$current) -gt 0){
   $download=Join-Path $root ('download-'+[guid]::NewGuid().ToString('N')+'.zip')
-  Status 0 'Downloading multiplayer update...'
+  Status 0 'Downloading ClassicGL update...'
   Fetch ($base+$name) $download 300MB $size
   Status 100 'Verifying update...'
   if((Get-FileHash -LiteralPath $download -Algorithm SHA256).Hash -ine $sha){throw 'Update SHA-256 mismatch'}
@@ -66,12 +66,12 @@ try{
    if($archive.Entries.Count -gt 10000){throw 'Too many files'}
    foreach($entry in $archive.Entries){
     $n=$entry.FullName.Replace('\','/')
-    if(!$n.StartsWith('OpenGL-Network-Lab/',[StringComparison]::Ordinal)){throw 'Unexpected package root'}
-    $rel=$n.Substring('OpenGL-Network-Lab/'.Length).TrimEnd('/')
+    if(!$n.StartsWith('ClassicGL-Network-Lab/',[StringComparison]::Ordinal)){throw 'Unexpected package root'}
+    $rel=$n.Substring('ClassicGL-Network-Lab/'.Length).TrimEnd('/')
     if(!$rel){continue}
     $parts=$rel.Split('/')
     foreach($part in $parts){if(!$part -or $part -eq '.' -or $part -eq '..' -or $part -match '[<>:"|?*\x00-\x1f]' -or $part.EndsWith('.') -or $part.EndsWith(' ') -or $part -match '^(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9])(\.|$)'){throw 'Unsafe archive entry'}}
-    if($parts[0] -notin @('build','src','assets','licenses','PLAY.bat','OpenGL.vbs','README.txt','BUILD-INFO.txt','SHA256SUMS.txt')){throw 'Unexpected package file'}
+    if($parts[0] -notin @('build','src','assets','licenses','PLAY.bat','ClassicGL.vbs','README.txt','BUILD-INFO.txt','SHA256SUMS.txt')){throw 'Unexpected package file'}
     if($seen.ContainsKey($rel)){throw 'Duplicate archive entry'};$seen[$rel]=$true
     $total+=$entry.Length;if($total -gt 512MB){throw 'Expanded package too large'}
     $target=Join-Path $stage ($rel.Replace('/','\'))
@@ -102,14 +102,14 @@ try{
   if(Test-Path -LiteralPath $pointer){[IO.File]::Replace($tmp,$pointer,$pointer+'.previous')}else{[IO.File]::Move($tmp,$pointer)}
   $current=$v
  }elseif([string]::CompareOrdinal($v,$current) -lt 0){throw 'Server offered an older build. No downgrade performed'}
- Status 100 'Starting OpenGL...'
+ Status 100 'Starting ClassicGL...'
  $form.Close();$form.Dispose();$form=$null
  $game=Join-Path $versions $current
  $ps=Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
  $p=Start-Process -FilePath $ps -ArgumentList @('-NoProfile','-NonInteractive','-ExecutionPolicy','Bypass','-File',('"'+(Join-Path $game 'src\crash_reporter.ps1')+'"')) -WorkingDirectory $game -WindowStyle Hidden -Wait -PassThru
  if($p.ExitCode -ne 0){throw 'Game exited abnormally. See crash-reports in the installed version folder.'}
 }catch{
- try{Add-Type -AssemblyName System.Windows.Forms;[Windows.Forms.MessageBox]::Show($_.Exception.Message,'OpenGL Multiplayer Test','OK','Warning')|Out-Null}catch{Write-Host $_}
+ try{Add-Type -AssemblyName System.Windows.Forms;[Windows.Forms.MessageBox]::Show($_.Exception.Message,'ClassicGL','OK','Warning')|Out-Null}catch{Write-Host $_}
  exit 1
 }finally{
  if($form){$form.Dispose()}
