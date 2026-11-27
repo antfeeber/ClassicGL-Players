@@ -2,14 +2,12 @@
 
 Official Windows x64 player downloads.
 
-## [Download the latest public release](https://github.com/antfeeber/ClassicGL-Players/releases/latest)
+**[Download the full game and updater](https://github.com/antfeeber/ClassicGL-Players/releases/latest)**
 
-For automatic updates, use [OpenGL Multiplayer Setup.zip](https://github.com/antfeeber/ClassicGL-Players/releases/download/multiplayer-test/OpenGL-Multiplayer-Setup.zip). It supports both singleplayer and multiplayer.
+The new unified package (starting with v226, after verification) includes the complete game, updater, and root PLAY.bat. Extract it once and use that root PLAY.bat every time.
 
-1. Extract the setup ZIP once into a writable folder.
-2. Open PLAY.bat each time. The launcher checks for verified updates before starting.
-3. Use the same version as your friends.
+[Small online installer / migration launcher](https://github.com/antfeeber/ClassicGL-Players/releases/download/multiplayer-test/OpenGL-Multiplayer-Setup.zip)
 
-The multiplayer update channel advances after automated verification. The latest public release is a separately promoted Windows snapshot; check its tag for the published version. Keep saved worlds backed up. No compiler or GitHub account is required to play.
+Already have an older standalone game? Close it first, extract the small setup ZIP beside your existing PLAY.bat, and replace only the launcher files. Keep your data folder; the updater copies it into the first updated version without deleting the original. The migration-capable setup is available after the new publication succeeds.
 
-This repository is for player distribution only.
+This repository also contains the launcher's three files directly. Do not copy the full game ZIP over an existing installation with saves; extract it to a new folder instead. Updates are downloaded automatically once verified. No GitHub account, compiler, or MSYS2 is required to play.
