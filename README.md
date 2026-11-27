@@ -4,7 +4,7 @@ Official Windows x64 player downloads.
 
 **[Download the full game and updater](https://github.com/antfeeber/ClassicGL-Players/releases/latest)**
 
-The new unified package (starting with v226, after verification) includes the complete game, updater, and root PLAY.bat. Extract it once and use that root PLAY.bat every time.
+The new unified package (starting with v226, after verification) includes the complete game, Updater.ps1, and root PLAY.bat. Extract it once and use that root PLAY.bat every time.
 
 [Small online installer / migration launcher](https://github.com/antfeeber/ClassicGL-Players/releases/download/multiplayer-test/OpenGL-Multiplayer-Setup.zip)
 

@@ -6,4 +6,4 @@ root = fs.GetParentFolderName(WScript.ScriptFullName)
 shell.CurrentDirectory = root
 q = Chr(34)
 ps = shell.ExpandEnvironmentStrings("%SystemRoot%") & "\System32\WindowsPowerShell\v1.0\powershell.exe"
-shell.Run q & ps & q & " -NoProfile -NonInteractive -ExecutionPolicy Bypass -File " & q & root & "\Update.ps1" & q, 0, True
+shell.Run q & ps & q & " -NoProfile -NonInteractive -ExecutionPolicy Bypass -File " & q & root & "\Updater.ps1" & q, 0, True
