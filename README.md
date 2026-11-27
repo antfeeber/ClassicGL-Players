@@ -1,21 +1,15 @@
-# ClassicGL
+# OpenGL
 
-Official ClassicGL player downloads.
+Official Windows x64 player downloads.
 
-## [Download ClassicGL — Windows x64](https://github.com/mrplotterplus/ClassicGL-Players/releases/latest)
+## [Download the latest public release](https://github.com/antfeeber/ClassicGL-Players/releases/latest)
 
-**Release status:** The first public player package has not been published yet. The link above will lead to the latest release once it is available.
+For automatic updates, use [OpenGL Multiplayer Setup.zip](https://github.com/antfeeber/ClassicGL-Players/releases/download/multiplayer-test/OpenGL-Multiplayer-Setup.zip). It supports both singleplayer and multiplayer.
 
-### How to play
+1. Extract the setup ZIP once into a writable folder.
+2. Open PLAY.bat each time. The launcher checks for verified updates before starting.
+3. Use the same version as your friends.
 
-1. Download the Windows player ZIP from the release's Assets section (not Source code).
-2. Extract the whole ZIP to a writable folder.
-3. Double-click `PLAY.bat` or `ClassicGL.vbs`.
-
-No GitHub account, compiler or MSYS2 is needed. First-run setup offers the Microsoft browser runtime if missing. Fred speech requires the authorized voice installer.
-
-### Multiplayer and updates
-
-Use compatible game versions with your friends. The standalone launcher checks for updates before starting. Keep your `data/` folder backed up when updating.
+The multiplayer update channel advances after automated verification. The latest public release is a separately promoted Windows snapshot; check its tag for the published version. Keep saved worlds backed up. No compiler or GitHub account is required to play.
 
 This repository is for player distribution only.
